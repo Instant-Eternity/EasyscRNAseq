@@ -2,12 +2,27 @@
 rm(list = ls())
 gc()
 
+# Load necessary libraries
+library(getopt)
 library(dplyr)
 library(Seurat)
 library(ggplot2)
 library(SoupX)
 
+# Define command line options
+options <- getopt(
+  command.line = TRUE,
+  "output-dir=",
+  "work-dir=",
+  options = list(
+    longnames = c("output-dir", "work-dir"),
+    shortnames = c("o", "w"),
+    usage = "Usage: script.R --output-dir=<output_dir> --work-dir=<working_dir>"
+  )
+)
+
 setwd("H://CloudData//01_ZXL_scRNAseq")
+
 
 Clean_Soup <- function(path){
   out <- load10X(path) %>%
