@@ -11,18 +11,25 @@ library(SoupX)
 
 # Define command line options
 options <- getopt(
-  command.line = TRUE,
-  "output-dir=",
-  "work-dir=",
-  options = list(
-    longnames = c("output-dir", "work-dir"),
-    shortnames = c("o", "w"),
-    usage = "Usage: script.R --output-dir=<output_dir> --work-dir=<working_dir>"
-  )
+	command.line = TRUE,
+	"output-dir=",
+	"work-dir=",
+	options = list(
+		longnames = c("output-dir", "work-dir"),
+		shortnames = c("o", "w"),
+		usage = "Usage: script.R --output-dir=<output_dir> --work-dir=<working_dir>"
+	)
 )
 
-setwd("H://CloudData//01_ZXL_scRNAseq")
+# Check if required options are provided
+if (!is.null(options$output.dir) && !is.null(options$work.dir)) {
+  output_dir <- options$output.dir
+  setwd(options$work.dir)
+} else {
+  stop("Error: Both output directory (--output-dir) and working directory (--work-dir) are required.")
+}
 
+setwd(options$work.dir)
 
 Clean_Soup <- function(path){
   out <- load10X(path) %>%
